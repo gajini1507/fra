@@ -1,0 +1,12 @@
+# Doble FRA Measurement
+# Date: 2025-10-07
+# Transformer ID: TX-101
+Frequency (Hz),Transfer Function (dB),Phase (deg)
+100,-0.6,0.8
+250,-1.1,1.6
+500,-1.9,2.5
+750,-2.8,3.1
+1000,,
+2000,-4.3,4.5
+4000,-6.2,5.1
+8000,-7.9,5.6

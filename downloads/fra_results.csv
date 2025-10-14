@@ -1,0 +1,11 @@
+id,transformer_id,file_name,date,status,predicted_fault,confidence,notes,deleted
+9,1,doble_test_std.csv,2025-10-09 05:21:59,Classified,Healthy,1.0,,0
+10,1,omicron_test_std.csv,2025-10-09 05:21:59,Classified,Healthy,1.0,,0
+7,1,doble_test_std.csv,2025-10-09 05:21:22,Classified,Healthy,1.0,,0
+8,1,omicron_test_std.csv,2025-10-09 05:21:22,Classified,Healthy,1.0,,0
+5,1,doble_test_std.csv,2025-10-09 05:19:20,Classified,Healthy,1.0,,0
+6,1,omicron_test_std.csv,2025-10-09 05:19:20,Classified,Healthy,1.0,,0
+3,1,doble_test_std.csv,2025-10-09 03:17:34,Classified,Healthy,1.0,,0
+4,1,omicron_test_std.csv,2025-10-09 03:17:34,Classified,Healthy,1.0,,0
+1,1,doble_test_std.csv,2025-10-08 18:03:30,Classified,Healthy,1.0,,0
+2,1,omicron_test_std.csv,2025-10-08 18:03:30,Classified,Healthy,1.0,,0

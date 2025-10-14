@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0d6efd">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}');
+    });
+  }
+</script>
+
+    <meta charset="UTF-8">
+    <title>FRA Results</title>
+    <style> 
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e8f0ff, #f9fbff);
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #007BFF;
+            color: white;
+        }
+        tr:hover {
+            background: #f1f7ff;
+        }
+        .actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #b02a37;
+        }
+        .btn-download {
+            background-color: #28a745;
+        }
+        .btn-download:hover {
+            background-color: #1e7e34;
+        }
+        .flash {
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.warning { background: #fff3cd; color: #856404; }
+        .flash.danger { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>📊 FRA Test Results</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Results Table -->
+    {% if tables %}
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Transformer ID</th>
+                <th>File Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Predicted Fault</th>
+                <th>Confidence</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in tables %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.transformer_id }}</td>
+                <td>{{ row.file_name }}</td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.status }}</td>
+                <td>{{ row.predicted_fault }}</td>
+                <td>{{ "%.2f"|format(row.confidence * 100) }}%</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_result', result_id=row.id) }}" style="display:inline;">
+                        <td>
+                            <a href="{{ url_for('show_graph', test_id=row.id) }}" class="btn btn-sm btn-primary">Show Graph</a>
+                            <button class="btn btn-danger" onclick="hideRow(this)">🗑 Delete</button>
+                        </td>
+
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align:center; font-size: 18px;">No results found for your account yet.</p>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="actions">
+        <a href="{{ url_for('download_results') }}" class="btn btn-download">⬇ Download CSV</a>
+        <a href="{{ url_for('upload') }}" class="btn">⬆ Upload New Data</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Logout</a>
+    </div>
+</body>
+</html>

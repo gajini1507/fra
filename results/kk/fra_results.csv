@@ -1,0 +1,4 @@
+id,transformer_id,filename,date,status,predicted_fault,confidence
+3,TX-001,omicron_test.csv,2025-10-11 19:18:59,Completed,No Fault,0.98
+2,TX-001,megger_sample.csv,2025-10-11 18:23:01,Completed,No Fault,0.98
+1,TX-001,megger_sample.csv,2025-10-11 18:22:44,Completed,No Fault,0.98

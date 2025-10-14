@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0d6efd">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}');
+    });
+  }
+</script>
+
+    <meta charset="UTF-8">
+    <title>Upload FRA File</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e8f0ff, #f9fbff);
+            padding: 40px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Upload FRA Data</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="file">Select FRA file:</label>
+            <input type="file" name="file" id="file" required>
+            <button type="submit" class="btn">Upload and Analyze</button>
+        </form>
+        <a href="{{ url_for('results') }}" class="btn" style="background:#6c757d;">View Results</a>
+    </div>
+</body>
+</html>

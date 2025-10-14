@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FRA Graph</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0d6efd">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}');
+    });
+  }
+</script>
+
+</head>
+<body>
+  <h2>{{ file_name }}</h2>
+  <p><b>Test Type:</b> {{ test_type }}</p>
+  <p><b>Transformer ID:</b> {{ transformer_id }}</p>
+  <p><b>Predicted Fault:</b> {{ predicted_fault }} (Confidence: {{ confidence }})</p>
+  <canvas id="fraChart" width="800" height="400"></canvas>
+  <script>
+    const ctx = document.getElementById('fraChart');
+    const freq = {{ freq|tojson }};
+    const response = {{ response|tojson }};
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: freq,
+        datasets: [{
+          label: 'Magnitude (dB)',
+          data: response,
+          borderWidth: 2,
+          borderColor: 'blue',
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'logarithmic',
+            title: { display: true, text: 'Frequency (Hz)' }
+          },
+          y: {
+            title: { display: true, text: 'Magnitude (dB)' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

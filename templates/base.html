@@ -1,0 +1,6 @@
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/sw.js');
+  }
+</script>
