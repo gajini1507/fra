@@ -10,6 +10,13 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 from datetime import datetime, timedelta
 
+std_folder = "standardized_data"
+
+# ✅ Ensure folder exists — prevents Render crash
+if not os.path.exists(std_folder):
+    print(f"⚠️ Creating missing folder: {std_folder}")
+    os.makedirs(std_folder, exist_ok=True)
+
 # -------- APP SETUP --------
 app = Flask(__name__)
 app.secret_key = 'replace-this-with-a-secure-random-key'  # Change for production!
@@ -406,6 +413,7 @@ def show_graph(test_id):
 
 # -------- RUN APP --------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=False)
+    app.run(host="0.0.0.0", port=10000, debug=True)
     print(f"💾 User DB folder: {RESULTS_ROOT}")
     app.run(debug=True)
+
