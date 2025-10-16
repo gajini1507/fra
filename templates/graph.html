@@ -1,30 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>FRA Graph</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#0d6efd">
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}');
-    });
-  }
-</script>
+  <meta name="theme-color" content="#0d6efd">
 
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #222;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 4px 0;
+    }
+
+    b {
+      color: #333;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 30px auto;
+      max-width: 900px;
+      transition: 0.3s ease;
+    }
+
+    .chart-container:hover {
+      transform: scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 400px !important;
+    }
+
+    footer {
+      font-size: 14px;
+      color: #666;
+      margin-top: 30px;
+    }
+  </style>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}');
+      });
+    }
+  </script>
 </head>
+
 <body>
   <h2>{{ file_name }}</h2>
   <p><b>Test Type:</b> {{ test_type }}</p>
   <p><b>Transformer ID:</b> {{ transformer_id }}</p>
   <p><b>Predicted Fault:</b> {{ predicted_fault }} (Confidence: {{ confidence }})</p>
-  <canvas id="fraChart" width="800" height="400"></canvas>
+
+  <div class="chart-container">
+    <canvas id="fraChart"></canvas>
+  </div>
+
+  <footer>© 2025 FRA Analysis System | All Rights Reserved</footer>
+
   <script>
     const ctx = document.getElementById('fraChart');
     const freq = {{ freq|tojson }};
     const response = {{ response|tojson }};
+
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -33,22 +93,32 @@
           label: 'Magnitude (dB)',
           data: response,
           borderWidth: 2,
-          borderColor: 'blue',
-          fill: false
+          borderColor: '#0d6efd',
+          fill: false,
+          tension: 0.25
         }]
       },
       options: {
         scales: {
           x: {
             type: 'logarithmic',
-            title: { display: true, text: 'Frequency (Hz)' }
+            title: { display: true, text: 'Frequency (Hz)' },
+            ticks: { color: '#555' }
           },
           y: {
-            title: { display: true, text: 'Magnitude (dB)' }
+            title: { display: true, text: 'Magnitude (dB)' },
+            ticks: { color: '#555' }
           }
+        },
+        plugins: {
+          legend: { display: true, labels: { color: '#333' } },
+          tooltip: { mode: 'index', intersect: false }
         }
       }
     });
   </script>
 </body>
+
 </html>
+
+
